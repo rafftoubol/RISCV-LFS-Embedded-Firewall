@@ -1,0 +1,55 @@
+#!/bin/busybox sh
+
+echo "--- Init Script Start ---"
+
+# Mount essential filesystems
+/bin/busybox mount -t proc none /proc
+echo "/proc mounted"
+/bin/busybox mount -t sysfs none /sys
+echo "/sys mounted"
+/bin/busybox mount -t devtmpfs none /dev
+echo "/dev mounted"
+
+# Create applet symlinks if desired
+/bin/busybox --install -s /bin
+echo "Busybox symlinks installed"
+
+echo "Contents of /dev:"
+ls -l /dev
+echo "--- End Contents of /dev ---"
+
+# Check if /dev/console exists
+if [ -e /dev/console ]; then
+    echo "/dev/console exists."
+else
+    echo "/dev/console does NOT exist!"
+fi
+
+# Check if /dev/ttyS0 exists
+if [ -e /dev/ttyS0 ]; then
+    echo "/dev/ttyS0 exists."
+else
+    echo "/dev/ttyS0 does NOT exist!"
+fi
+
+
+echo "Attempting to connect shell to console..."
+# Open the console device for stdin (0), stdout (1), and stderr (2)
+# /dev/console is the standard way, managed by the kernel
+# exec 0</dev/console 1>/dev/console 2>&1
+
+# Let's try /dev/ttyS0 explicitly instead of /dev/console
+exec 0</dev/ttyS0 1>/dev/ttyS0 2>&1
+
+echo "This echo should not appear if exec succeeds." # This line is mostly for debugging logic flow
+
+echo "Boot completed with musl libc!" # This line will likely appear *before* the shell starts if it's the last echo before exec failed
+
+# Execute the shell. Use 'exec' so the shell replaces the current process (PID 1)
+exec /bin/busybox sh
+
+echo "This echo should NEVER appear if exec /bin/busybox sh succeeds."
+# If we reach here, exec /bin/busybox sh failed
+echo "FATAL: Failed to exec /bin/busybox sh after redirection attempt!"
+# Fallback: just let the script exit, kernel will try other inits (which will likely fail) or panic
+exit 1

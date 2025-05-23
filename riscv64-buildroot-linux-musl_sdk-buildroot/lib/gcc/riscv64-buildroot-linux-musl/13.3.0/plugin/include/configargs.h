@@ -1,0 +1,7 @@
+/* Generated automatically. */
+static const char configuration_arguments[] = "./configure --prefix=/home/raph/riscv-work/riscv64-buildroot-linux-musl_sdk-buildroot --sysconfdir=/home/raph/riscv-work/riscv64-buildroot-linux-musl_sdk-buildroot/etc --enable-static --target=riscv64-buildroot-linux-musl --with-sysroot=/home/raph/riscv-work/riscv64-buildroot-linux-musl_sdk-buildroot/riscv64-buildroot-linux-musl/sysroot --enable-__cxa_atexit --with-gnu-ld --disable-libssp --disable-multilib --disable-decimal-float --enable-plugins --enable-lto --with-gmp=/home/raph/riscv-work/riscv64-buildroot-linux-musl_sdk-buildroot --with-mpc=/home/raph/riscv-work/riscv64-buildroot-linux-musl_sdk-buildroot --with-mpfr=/home/raph/riscv-work/riscv64-buildroot-linux-musl_sdk-buildroot --with-pkgversion='Buildroot 2025.02' --with-bugurl=https://gitlab.com/buildroot.org/buildroot/-/issues --without-zstd --disable-libmpx --disable-libquadmath --disable-libquadmath-support --disable-libsanitizer --enable-tls --enable-threads --without-isl --without-cloog --with-arch=rv64imafd_zicsr_zifencei --with-abi=lp64d --enable-languages=c --with-build-time-tools=/home/raph/riscv-work/riscv64-buildroot-linux-musl_sdk-buildroot/riscv64-buildroot-linux-musl/bin --enable-shared --disable-libgomp";
+static const char thread_model[] = "posix";
+
+static const struct {
+  const char *name, *value;
+} configure_default_options[] = { { "abi", "lp64d" }, { "arch", "rv64imafd_zicsr_zifencei" }, { "isa_spec", "20191213" } };

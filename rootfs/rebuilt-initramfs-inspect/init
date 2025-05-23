@@ -1,0 +1,29 @@
+#!/bin/busybox sh
+
+echo "--- Init Script Start ---"
+
+# Mount essential filesystems
+/bin/busybox mount -t proc none /proc
+echo "/proc mounted"
+/bin/busybox mount -t sysfs none /sys
+echo "/sys mounted"
+/bin/busybox mount -t devtmpfs none /dev
+echo "/dev mounted"
+
+# Create applet symlinks if desired
+/bin/busybox --install -s /bin
+echo "Busybox symlinks installed"
+
+# --- Attempt to become session leader and redirect TTY ---
+echo "Attempting to become session leader and redirect to /dev/ttyS0..."
+setsid sh -c 'exec sh </dev/ttyS0 >/dev/ttyS0 2>&1'
+
+echo "This line should NOT appear if the above exec with setsid succeeded."
+
+echo "Boot completed with musl libc!" # This might appear before the shell if setsid/exec failed
+
+# If the above complex command failed, we might try a simpler exec (less likely to work)
+# exec /bin/busybox sh
+
+echo "FATAL: Failed to launch interactive shell."
+exit 1

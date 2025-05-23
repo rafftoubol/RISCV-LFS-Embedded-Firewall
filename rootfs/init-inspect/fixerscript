@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Define the old and new target paths
+old_prefix="/initramfs_staging"
+new_target="/bin/busybox"
+
+# Ensure we are in the root of the extracted initramfs
+if [ ! -d bin ]; then
+  echo "Error: This script should be run from the root of the extracted initramfs directory."
+  exit 1
+fi
+
+# Find all symbolic links within the 'bin' directory
+find bin -type l -print0 | while IFS= read -r -d $'\0' link_path; do
+  # Get the target of the current symlink
+  target=$(readlink "$link_path")
+
+  # Check if the target starts with the old prefix
+  if [[ "$target" == "$old_prefix/bin/busybox" ]]; then
+    echo "Updating symlink: '$link_path' -> '$new_target'"
+    # Remove the old symlink
+    rm "$link_path"
+    # Create the new symlink
+    ln -s "$new_target" "$link_path"
+  fi
+done
+
+echo "Symlink update process completed."

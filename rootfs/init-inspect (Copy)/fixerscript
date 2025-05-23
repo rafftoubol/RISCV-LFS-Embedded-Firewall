@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Ensure we are in the root of the extracted initramfs
+if [ ! -d bin ]; then
+  echo "Error: This script should be run from the root of the extracted initramfs directory."
+  exit 1
+fi
+
+# Ensure busybox binary exists
+if [ ! -f bin/busybox ]; then
+  echo "Error: busybox binary not found in bin/."
+  exit 1
+fi
+
+echo "Creating BusyBox symlinks..."
+
+# Create symlinks in /bin
+/bin/busybox --install -s bin
+
+# Create symlinks in /sbin (if needed)
+mkdir -p sbin
+/bin/busybox --install -s sbin
+
+# Create symlinks in /usr/bin (if needed)
+mkdir -p usr/bin
+/bin/busybox --install -s usr/bin
+
+# Create symlinks in /usr/sbin (if needed)
+mkdir -p usr/sbin
+/bin/busybox --install -s usr/sbin
+
+echo "BusyBox symlinks created."
